@@ -1,0 +1,66 @@
+# ============================
+# C++ Projects Git Ignore File
+# ============================
+
+# Compiled source files
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.so
+*.dll
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Static and dynamic libraries
+*.lib
+*.dll
+*.dylib
+
+# Debug and release folders
+Debug/
+Release/
+x64/
+x86/
+build/
+bin/
+obj/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# IDE / Editor specific files
+# ---- Code::Blocks ----
+*.depend
+*.layout
+
+# ---- Visual Studio ----
+*.sdf
+*.opensdf
+*.vcxproj.user
+*.VC.db
+.vs/
+
+# ---- Visual Studio Code ----
+.vscode/
+
+# ---- CLion / JetBrains ----
+.idea/
+
+# ---- Mac / Linux ----
+.DS_Store
+*.swp
+*.swo
+
+# ---- Backup files ----
+*~
+*.bak
+*.old
+
+# User-specific config
+*.user
