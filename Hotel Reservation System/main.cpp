@@ -56,3 +56,77 @@ int main()
     }
     return 0;
 }
+
+
+
+void showMenu() {
+    cout << "======================================\n";
+    cout << "         HOTEL RESERVATION SYSTEM     \n";
+    cout << "======================================\n";
+    cout << "1. Add Room\n";
+    cout << "2. View All Rooms\n";
+    cout << "3. Book Room\n";
+    cout << "4. View Bookings\n";
+    cout << "5. Cancel Booking\n";
+    cout << "6. Save Data\n";
+    cout << "7. Exit\n";
+}
+
+void loadData() {
+    ifstream in("rooms.txt");
+    if (!in) {
+        cout << "No previous data found.\n";
+        return;
+    }
+
+    roomCount = 0;
+    while (in >> rooms[roomCount].roomNumber) {
+        in.ignore();
+        getline(in, rooms[roomCount].type);
+        in >> rooms[roomCount].price >> rooms[roomCount].isBooked;
+        in.ignore();
+        getline(in, rooms[roomCount].guestName);
+        roomCount++;
+    }
+    in.close();
+    cout << "Loaded " << roomCount << " room(s) from file.\n";
+}
+
+void saveData() {
+    ofstream out("rooms.txt");
+    for (int i = 0; i < roomCount; i++) {
+        out << rooms[i].roomNumber << "\n"
+            << rooms[i].type << "\n"
+            << rooms[i].price << "\n"
+            << rooms[i].isBooked << "\n"
+            << rooms[i].guestName << "\n";
+    }
+    out.close();
+    cout << "Data saved successfully!\n";
+}
+
+
+void addRoom()
+{
+
+}
+
+void viewRooms()
+{
+
+}
+
+void bookRoom()
+{
+
+}
+
+void cancelBooking()
+{
+
+}
+
+void viewBookings()
+{
+
+}
