@@ -72,15 +72,18 @@ void showMenu() {
     cout << "7. Exit\n";
 }
 
-void loadData() {
+void loadData() 
+{
     ifstream in("rooms.txt");
-    if (!in) {
+    if (!in) 
+    {
         cout << "No previous data found.\n";
         return;
     }
 
     roomCount = 0;
-    while (in >> rooms[roomCount].roomNumber) {
+    while (in >> rooms[roomCount].roomNumber) 
+    {
         in.ignore();
         getline(in, rooms[roomCount].type);
         in >> rooms[roomCount].price >> rooms[roomCount].isBooked;
@@ -92,9 +95,11 @@ void loadData() {
     cout << "Loaded " << roomCount << " room(s) from file.\n";
 }
 
-void saveData() {
+void saveData() 
+{
     ofstream out("rooms.txt");
-    for (int i = 0; i < roomCount; i++) {
+    for (int i = 0; i < roomCount; i++) 
+    {
         out << rooms[i].roomNumber << "\n"
             << rooms[i].type << "\n"
             << rooms[i].price << "\n"
@@ -106,27 +111,128 @@ void saveData() {
 }
 
 
-void addRoom()
+void addRoom() 
 {
+    if (roomCount >= MAX_ROOMS) 
+    {
+        cout << "Cannot add more rooms.\n";
+        return;
+    }
 
+    Room r;
+    cout << "Enter Room Number: ";
+    cin >> r.roomNumber;
+    cin.ignore();
+
+    // Check if room already exists
+    for (int i = 0; i < roomCount; i++) 
+    {
+        if (rooms[i].roomNumber == r.roomNumber) 
+        {
+            cout << "Room already exists!\n";
+            return;
+        }
+    }
+
+    cout << "Enter Room Type (Single/Double/Suite): ";
+    getline(cin, r.type);
+    cout << "Enter Price per Night: ";
+    cin >> r.price;
+
+    r.isBooked = false;
+    r.guestName = "None";
+
+    rooms[roomCount++] = r;
+    cout << "Room added successfully!\n";
 }
 
-void viewRooms()
-{
 
+void viewRooms() 
+{
+    if (roomCount == 0) 
+    {
+        cout << "No rooms available.\n";
+        return;
+    }
+
+    cout << "\n------ All Rooms ------\n";
+    for (int i = 0; i < roomCount; i++) 
+    {
+        cout << "Room No: " << rooms[i].roomNumber
+             << " | Type: " << rooms[i].type
+             << " | Price: " << rooms[i].price
+             << " | Status: " << (rooms[i].isBooked ? "Booked" : "Available")
+             << "\n";
+    }
 }
 
-void bookRoom()
-{
 
+void bookRoom() 
+{
+    int roomNum;
+    cout << "Enter Room Number to book: ";
+    cin >> roomNum;
+    cin.ignore();
+
+    for (int i = 0; i < roomCount; i++) 
+    {
+        if (rooms[i].roomNumber == roomNum) 
+        {
+            if (rooms[i].isBooked) 
+            {
+                cout << "Room already booked.\n";
+                return;
+            }
+            cout << "Enter Guest Name: ";
+            getline(cin, rooms[i].guestName);
+            rooms[i].isBooked = true;
+            cout << "Room booked successfully for " << rooms[i].guestName << "!\n";
+            return;
+        }
+    }
+    cout << "Room not found!\n";
 }
 
-void cancelBooking()
-{
 
+void viewBookings() 
+{
+    bool found = false;
+    cout << "\n------ Booked Rooms ------\n";
+    for (int i = 0; i < roomCount; i++) 
+    {
+        if (rooms[i].isBooked) 
+        {
+            cout << "Room No: " << rooms[i].roomNumber
+                 << " | Guest: " << rooms[i].guestName
+                 << " | Type: " << rooms[i].type
+                 << " | Price: " << rooms[i].price << "\n";
+            found = true;
+        }
+    }
+    if (!found) cout << "No current bookings.\n";
 }
 
-void viewBookings()
-{
 
+void cancelBooking() 
+{
+    int roomNum;
+    cout << "Enter Room Number to cancel booking: ";
+    cin >> roomNum;
+
+    for (int i = 0; i < roomCount; i++) 
+    {
+        if (rooms[i].roomNumber == roomNum) 
+        {
+            if (!rooms[i].isBooked) 
+            {
+                cout << "Room is not booked.\n";
+                return;
+            }
+            rooms[i].isBooked = false;
+            rooms[i].guestName = "None";
+            cout << "Booking cancelled successfully!\n";
+            return;
+        }
+    }
+    cout << "Room not found!\n";
 }
