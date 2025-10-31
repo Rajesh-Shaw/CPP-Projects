@@ -7,11 +7,11 @@ This repository contains a variety of C++ projects — from simple console appli
 It’s perfect for students, beginners, and anyone looking to strengthen their C++ skills.
 ________________________________________
 🧩 Projects Included
-Project Name	            Description	                                                                Difficulty
-CalculatorApp	            A console-based calculator supporting basic arithmetic operations.	        🟢 Beginner
-StudentManagement	        Manage student records, grades, and average calculations.	                  🟡 Intermediate
-LibrarySystem	            Manage books, users, and borrow/return records.	                            🟡 Intermediate
-ChatApplication	          A client-server chat app using TCP sockets.	                                🔴 Advanced
+Project Name	Description	Difficulty
+CalculatorApp	A console-based calculator supporting basic arithmetic operations.	🟢 Beginner
+StudentManagement	Manage student records, grades, and average calculations.	🟡 Intermediate
+LibrarySystem	Manage books, users, and borrow/return records.	🟡 Intermediate
+ChatApplication	A client-server chat app using TCP sockets.	🔴 Advanced
 More projects will be added over time!
 ________________________________________
 🛠️ Technologies Used
@@ -38,4 +38,3 @@ ________________________________________
 Rajesh Shaw
 📧 rkshaw5200@gmail.com
 💻 GitHub Profile
-

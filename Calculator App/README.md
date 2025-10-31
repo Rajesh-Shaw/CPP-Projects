@@ -56,6 +56,6 @@ ________________________________________
 ________________________________________
 👨‍💻 Author
 Rajesh Shaw
-📧 your.email@example.com
-💻 GitHub Profile
+📧 rkshaw5200@gmail.com
+💻 https://github.com/Rajesh-Shaw/
 

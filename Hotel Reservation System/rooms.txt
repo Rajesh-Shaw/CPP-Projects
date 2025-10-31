@@ -1,0 +1,15 @@
+101
+Single
+500
+0
+None
+102
+Double
+800
+1
+Rajesh
+103
+Suite
+900
+0
+None
