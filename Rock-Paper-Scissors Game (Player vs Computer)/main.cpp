@@ -70,27 +70,84 @@ int main()
 }
 
 
+
+
 void showMenu()
 {
-
+    cout << "\nChoose your move:\n";
+    cout << "1. Rock\n";
+    cout << "2. Paper\n";
+    cout << "3. Scissors\n";
+    cout << "4. Exit\n";
 }
 
-string getComputerChoice()
-{
 
-}
 
 string getPlayerChoice()
 {
+    int choice;
+    cout << "Enter your choice (1-4): ";
+    cin >> choice;
 
+    if (!cin) // Handle invalid input
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "Invalid input! Enter a number between 1 and 4.\n";
+        return getPlayerChoice(); // retry
+    }
+
+    switch (choice)
+    {
+    case 1: return "rock";
+    case 2: return "paper";
+    case 3: return "scissors";
+    case 4: return "exit";
+    default:
+        cout << "Invalid choice! Try again.\n";
+        return getPlayerChoice();
+    }
 }
+
+// Randomly select computer choice
+string getComputerChoice()
+{
+    int randomNum = rand() % 3 + 1;
+    switch (randomNum)
+    {
+    case 1: return "rock";
+    case 2: return "paper";
+    case 3: return "scissors";
+    default: return "rock"; // fallback
+    }
+}
+
 
 string findWinner(string player, string computer)
 {
+    if (player == computer)
+        return "draw";
 
+    if ((player == "rock" && computer == "scissors") ||
+        (player == "paper" && computer == "rock") ||
+        (player == "scissors" && computer == "paper"))
+        return "win";
+
+    return "lose";
 }
+
+
 
 bool playAgainPrompt()
 {
-
+    cout << "\nPlay again? (1 = Yes, 0 = No): ";
+    int choice;
+    cin >> choice;
+    if (!cin)
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        return false;
+    }
+    return choice == 1;
 }
