@@ -3,6 +3,8 @@
 #include<string>
 #include<iomanip>
 #include<vector>
+#include<sstream>
+#include <limits>
 using namespace std;
 
 
@@ -25,7 +27,7 @@ class Employee
         virtual void display() const{
             cout << setw(5) << id << " | "
                  << setw(15) << name << " | "
-                 << setw(10) << getRole << " | "
+                 << setw(10) << getRole() << " | "
                  << "Rs." << setw(10) << fixed << setprecision(2) << calculateSalary() << endl;
         }
 
@@ -56,6 +58,9 @@ class Manager : public Employee
         string getRole() const override{
             return "Manager";
         }
+        double calculateSalary() const override{
+            return (baseSalary + bonus);
+        }
         string serialize()const override{
             return to_string(id) + "," + name + "," + to_string(baseSalary) + ",Manager," + to_string(bonus) + "\n";
         }
@@ -73,7 +78,7 @@ class Developer : public Employee
             : Employee(i, n, s), projects(p) {}
         
         double calculateSalary() const override{
-            return baseSalary + (projects * 1000);
+            return (baseSalary + (projects * 1000));
         }
 
         string getRole() const override{
@@ -81,7 +86,7 @@ class Developer : public Employee
         }
 
         string serialize() const override{
-            return to_string(id) + "," +name + "," + to_string(baseSalary) + ",Developer" + to_string(projects) + "\n"; 
+            return to_string(id) + "," +name + "," + to_string(baseSalary) + ",Developer," + to_string(projects) + "\n"; 
         }
 };
 
@@ -95,7 +100,7 @@ class Intern : public Employee
             : Employee(i, n, s), workingHours(h){}
 
         double calculateSalary() const override{
-            return baseSalary + (workingHours * 50);
+            return (baseSalary + (workingHours * 50));
         }
 
         string getRole() const override{
@@ -103,7 +108,7 @@ class Intern : public Employee
         }
 
         string serialize() const override{
-            return to_string(id) + "," + name + "," + to_string(baseSalary) + ",Intern" + to_string(workingHours) + "\n";
+            return to_string(id) + "," + name + "," + to_string(baseSalary) + ",Intern," + to_string(workingHours) + "\n";
         }
 };
 
@@ -160,27 +165,133 @@ class EmployeeSystem
 
         void addEmployee()
         {
+            int id, roleChoice;
+            string name;
+            double base;
 
+            cout << "Enter Employee ID: ";
+            cin >> id;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            // cin.ignore();
+
+            for (auto e : employees) 
+            {
+                if (e->getId() == id) 
+                {
+                    cout << "Error: Employee ID already exists!\n";
+                    return;
+                }
+            }
+
+            cout << "Enter Name: ";
+            getline(cin, name);
+
+            cout<< "Enter Base Salary: ";
+            cin >> base;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            cout << "Select Role:\n1. Manager\n2. Developer\n3. Intern\nEnter: ";
+            cin >> roleChoice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            switch(roleChoice)
+            {
+                case 1:{
+                    double bonus;
+                    cout << "Enter Bonus: ";
+                    cin >> bonus;
+                    employees.push_back(new Manager(id, name, base, bonus));
+                    break;
+                }
+                case 2:{
+                    int projects;
+                    cout << "Enter Number of Projects: ";
+                    cin >> projects;
+                    employees.push_back(new Developer(id, name, base, projects));
+                    break;
+                }
+                case 3:{
+                    int hours;
+                    cout << "Enter Working Hours: ";
+                    cin >> hours;
+                    employees.push_back(new Intern(id, name, base, hours));
+                    break;
+                }
+                default:
+                    cout << "Invalid role!\n";
+            }
+            cout << "Employee added successfully!\n";
         }
 
         void viewEmployees() const
         {
-
+            cout << "\n-----------------------------------------------------------\n";
+            cout << "ID    | Name            | Role       | Salary\n";
+            cout <<"-----------------------------------------------------------\n";
+            for(auto e : employees)
+                e->display();
+            cout <<"-----------------------------------------------------------\n";
         }
 
         void searchEmployee() const
         {
-
+            int id;
+            cout << "Enter Employee ID to search: ";
+            cin >> id;
+            bool found = false;
+            for(auto e : employees)
+            {
+                if(e->getId() == id)
+                {
+                    cout << "\nEmployee Found:\n";
+                    e->display();
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+                cout << "Employee not found.\n";
         }
 
         void saveToFile() const
         {
-
+            ofstream out("employees.txt");
+            for(auto e : employees)
+                out << e->serialize();
+            out.close();
         }
 
         void loadFromFile()
         {
+            ifstream in("employees.txt");
+            if(!in) return;
 
+            string line;
+            while(getline(in, line))
+            {
+                if(line.empty())
+                    continue;
+                
+                stringstream ss(line);
+                string idStr, name, baseStr, role, extraStr;
+                getline(ss, idStr, ',');
+                getline(ss, name, ',');
+                getline(ss, baseStr, ',');
+                getline(ss, role, ',');
+                getline(ss, extraStr, ',');
+
+                int id = stoi(idStr);
+                double base = stod(baseStr);
+
+                if(role == "Manager")
+                    employees.push_back(new Manager(id, name, base, stod(extraStr)));
+                else if(role == "Developer")
+                    employees.push_back(new Developer(id, name, base, stoi(extraStr)));
+                else if(role == "Intern")
+                    employees.push_back(new Intern(id, name, base, stoi(extraStr)));
+
+            }
+            in.close();
         }
 };
 
